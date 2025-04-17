@@ -3,12 +3,8 @@ provider "aws" {
 }
 
 module "vpc-peering" {
-  source = "../"
-
-  name        = "vpc-peering"
-  environment = "test"
-  label_order = ["environment", "name"]
-
+  source            = "../"
+  name              = "vpc-peering"
   enable_peering    = true
   accepter_role_arn = "arn:aws:iam::xxxxxxxxx:role/switch-role"
   accepter_region   = "us-east-1"

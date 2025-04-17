@@ -1,7 +1,6 @@
 module "labels" {
-  source  = "cypik/labels/aws"
-  version = "1.0.2"
-
+  source      = "cypik/labels/aws"
+  version     = "1.0.2"
   name        = var.name
   environment = var.environment
   attributes  = var.attributes
@@ -9,7 +8,6 @@ module "labels" {
   managedby   = var.managedby
   label_order = var.label_order
 }
-
 
 provider "aws" {
   alias   = "accepter"
@@ -28,7 +26,6 @@ data "aws_caller_identity" "peer" {
 data "aws_region" "peer" {
   provider = aws.accepter
 }
-
 
 resource "aws_vpc_peering_connection" "default" {
   count         = var.enable_peering == true ? 1 : 0
@@ -53,7 +50,6 @@ resource "aws_vpc_peering_connection_accepter" "peer" {
   tags                      = module.labels.tags
 }
 
-
 data "aws_vpc" "requestor" {
   count = var.enable_peering == true ? 1 : 0
   id    = var.requestor_vpc_id
@@ -77,13 +73,11 @@ data "aws_subnets" "requestor" {
   }
 }
 
-
 data "aws_vpc" "acceptor" {
   provider = aws.accepter
   count    = var.enable_peering == true ? 1 : 0
   id       = var.acceptor_vpc_id
 }
-
 
 data "aws_subnets" "acceptor" {
   provider = aws.accepter
@@ -95,14 +89,12 @@ data "aws_subnets" "acceptor" {
   }
 }
 
-
 data "aws_route_tables" "acceptor" {
   provider = aws.accepter
   count    = var.enable_peering == true ? length(distinct(sort(data.aws_subnets.acceptor[0].ids))) : 0
 
   vpc_id = data.aws_vpc.acceptor[0].id
 }
-
 
 resource "aws_route" "requestor" {
 
@@ -124,7 +116,6 @@ resource "aws_route" "requestor" {
     aws_vpc_peering_connection.default,
   ]
 }
-
 
 resource "aws_route" "acceptor" {
   provider = aws.accepter

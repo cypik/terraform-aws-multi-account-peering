@@ -17,13 +17,6 @@ variable "label_order" {
   description = "Label order, e.g. `name`,`application`."
 }
 
-variable "tags" {
-  type        = map(string)
-  default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
-}
-
-
 variable "accepter_region" {
   type        = string
   description = "The region of acceptor vpc."
@@ -43,18 +36,6 @@ variable "requestor_vpc_id" {
 variable "acceptor_vpc_id" {
   type        = string
   description = "Acceptor VPC ID."
-}
-
-variable "acceptor_allow_remote_vpc_dns_resolution" {
-  type        = bool
-  default     = true
-  description = "Allow acceptor VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the requestor VPC."
-}
-
-variable "requestor_allow_remote_vpc_dns_resolution" {
-  type        = bool
-  default     = true
-  description = "Allow requestor VPC to resolve public DNS hostnames to private IP addresses when queried from instances in the acceptor VPC."
 }
 
 variable "accepter_role_arn" {
