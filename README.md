@@ -22,7 +22,7 @@ To use this module, include it in your Terraform configuration file and provide 
 ```hcl
 module "vpc-peering" {
   source            = "cypik/multi-account-peering/aws"
-  version             = "1.0.0"
+  version           = "1.0.0"
   name              = "vpc-peering"
   enable_peering    = true
   accepter_role_arn = "arn:aws:iam::xxxxxxxxx:role/switch-role"
