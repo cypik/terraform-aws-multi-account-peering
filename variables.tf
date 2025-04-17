@@ -4,7 +4,6 @@ variable "name" {
   description = "Name  (e.g. `app` or `cluster`)."
 }
 
-
 variable "environment" {
   type        = string
   default     = ""
@@ -43,6 +42,7 @@ variable "accepter_role_arn" {
   default     = ""
   description = "The Role ARN of accepter AWS account."
 }
+
 variable "profile_name" {
   type        = string
   default     = null

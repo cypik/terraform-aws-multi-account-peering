@@ -1,4 +1,3 @@
-
 output "connection_id" {
   value       = join("", aws_vpc_peering_connection.default.*.id)
   description = "VPC peering connection ID."
