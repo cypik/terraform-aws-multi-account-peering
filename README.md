@@ -1,5 +1,5 @@
-# Terraform-aws-subnet
-# Terraform AWS Cloud Subnet Modules
+# Terraform-aws-multi-account-peering
+# Terraform AWS Cloud multi-account-peering Modules
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -16,8 +16,7 @@ This Terraform module creates AWS subnet along with additional configuration opt
 
 ## Usage
 To use this module, include it in your Terraform configuration file and provide the required input variables. Below is an example of how to use the module:
-# Examples:
-# Example: private-subnet
+# Example: multi-account-peering
 
 ```hcl
 module "vpc-peering" {
