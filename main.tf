@@ -95,27 +95,31 @@ data "aws_route_tables" "acceptor" {
 
   vpc_id = data.aws_vpc.acceptor[0].id
 }
-
 resource "aws_route" "requestor" {
 
   count = var.enable_peering == true ? length(
-    distinct(sort(data.aws_route_table.requestor.*.route_table_id))
+    distinct(sort([for rt in data.aws_route_table.requestor : rt.route_table_id]))
   ) * length(data.aws_vpc.acceptor[0].cidr_block_associations) : 0
 
   route_table_id = element(
-    distinct(sort(data.aws_route_table.requestor.*.route_table_id)),
+    distinct(sort([for rt in data.aws_route_table.requestor : rt.route_table_id])),
     ceil(
       count.index / length(data.aws_vpc.acceptor[0].cidr_block_associations)
     )
   )
 
-  destination_cidr_block    = data.aws_vpc.acceptor.0.cidr_block_associations[count.index % length(data.aws_vpc.acceptor[0].cidr_block_associations)]["cidr_block"]
+  destination_cidr_block = data.aws_vpc.acceptor[0].cidr_block_associations[
+    count.index % length(data.aws_vpc.acceptor[0].cidr_block_associations)
+  ]["cidr_block"]
+
   vpc_peering_connection_id = aws_vpc_peering_connection.default[0].id
+
   depends_on = [
     data.aws_route_table.requestor,
     aws_vpc_peering_connection.default,
   ]
 }
+
 
 resource "aws_route" "acceptor" {
   provider = aws.accepter
@@ -131,8 +135,12 @@ resource "aws_route" "acceptor" {
     )
   )
 
-  destination_cidr_block    = data.aws_vpc.requestor.0.cidr_block_associations[count.index % length(data.aws_vpc.requestor[0].cidr_block_associations)]["cidr_block"]
+  destination_cidr_block = data.aws_vpc.requestor[0].cidr_block_associations[
+    count.index % length(data.aws_vpc.requestor[0].cidr_block_associations)
+  ]["cidr_block"]
+
   vpc_peering_connection_id = aws_vpc_peering_connection.default[0].id
+
   depends_on = [
     data.aws_route_tables.acceptor,
     aws_vpc_peering_connection.default,
